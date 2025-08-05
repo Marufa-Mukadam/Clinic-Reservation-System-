@@ -1,0 +1,57 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+generator client {
+  provider = "prisma-client-js"
+}
+
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+
+model User {
+  id        Int   @id @default(autoincrement())
+  email     String   @unique
+  name      String?
+  password  String?
+  refreshToken String? 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  reservations Reservation[]
+}
+
+model Doctor {
+  id Int @id @default(autoincrement())
+  name String
+  email String @unique
+  password String
+  refreshToken String? 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  timeSlots TimeSlots [] 
+}
+
+model TimeSlots {
+id Int @id @default(autoincrement())
+availableFrom DateTime
+availableTo DateTime
+capacity Int
+doctorId Int
+doctor Doctor @relation(fields: [doctorId], references: [id],onDelete: Cascade)
+reservations Reservation[]
+}
+
+
+model Reservation {
+  id        Int   @id @default(autoincrement())
+  userId Int
+  slotId Int
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  timeSlot TimeSlots @relation(fields: [slotId], references: [id], onDelete: Cascade)
+}

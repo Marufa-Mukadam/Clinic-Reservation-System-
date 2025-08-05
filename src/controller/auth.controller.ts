@@ -38,10 +38,8 @@ export const registerDr = async (
       pass: hashedPassword,
       availability,
     };
-    const userCreated = await authenticate.register(data);
-    if (!userCreated) {
-      throw new HTTPError("User creation failed", 500);
-    }
+    await authenticate.register(data);
+
     return res.status(200).json({
       message: "Email has been sent successfully , kindly activate ur account.",
       success: true,
@@ -60,17 +58,13 @@ export const drActivateAccount = async (
   try {
     const token = req.headers.authorization?.split(" ")[1];
     if (!token) {
-      throw new HTTPError("Unauthorized user", 401);
+      throw new HTTPError("Unauthorized ", 401);
     }
     const userCreated = await authenticate.drActivateAccount(token);
-    if (!userCreated) {
-      throw new HTTPError("User creation failed", 500);
-    }
-    // const { password, refreshToken, ...user } = userCreated; // Exclude password and refreshToken from the response
+
     return res.status(200).json({
       message: userCreated.message,
       success: userCreated.success,
-      // data: user,
     });
   } catch (error) {
     next(error);
@@ -88,14 +82,10 @@ export const drLoginPassword = async (
     const data: ILoginData = {
       email,
       password,
-      ip: req.ip,
-      // Assuming you want to include the IP address
     };
     Helpers.validateWithZod(VLogin, data);
     const userCreated = await authenticate.login(data, role);
-    if (!userCreated) {
-      throw new HTTPError("User creation failed", 500);
-    }
+
     res.cookie("refreshToken", userCreated.refreshToken, {
       httpOnly: true,
       sameSite: "strict", // or 'Strict'
@@ -103,7 +93,7 @@ export const drLoginPassword = async (
       path: "/",
     });
     return res.status(200).json({
-      message: "User logged in successfully",
+      message: "Doctor logged in successfully",
       success: true,
       accessToken: userCreated.token,
     });
@@ -129,10 +119,8 @@ export const registerUser = async (
       email,
       pass: hashedPassword,
     };
-    const userCreated = await authenticate.register(data);
-    if (!userCreated) {
-      throw new HTTPError("User creation failed", 500);
-    }
+    await authenticate.register(data);
+
     return res.status(200).json({
       message: "Email has been sent successfully , kindly activate ur account.",
       success: true,
@@ -151,12 +139,10 @@ export const userActivateAccount = async (
   try {
     const token = req.headers.authorization?.split(" ")[1];
     if (!token) {
-      throw new HTTPError("Unauthorized user", 401);
+      throw new HTTPError("Unauthorized", 401);
     }
     const userCreated = await authenticate.userActivateAccount(token);
-    if (!userCreated) {
-      throw new HTTPError("User creation failed", 500);
-    }
+
     // const { password, refreshToken, ...user } = userCreated; // Exclude password and refreshToken from the response
     return res.status(200).json({
       message: userCreated.message,
@@ -180,14 +166,12 @@ export const userLoginPassword = async (
     const data: ILoginData = {
       email,
       password,
-      ip: req.ip, // Assuming you want to include the IP address
+      // Assuming you want to include the IP address
     };
     Helpers.validateWithZod(VLogin, data);
 
     const userCreated = await authenticate.login(data, role);
-    if (!userCreated) {
-      throw new HTTPError("User creation failed", 500);
-    }
+
     res.cookie("refreshToken", userCreated.refreshToken, {
       httpOnly: true,
       sameSite: "strict", // or 'Strict'
@@ -212,13 +196,10 @@ export const Userlogout = async (
   try {
     const user = req.user;
     if (!user) {
-      throw new HTTPError("User not found", 401);
+      throw new HTTPError("Unauthorized", 401);
     }
     const userRole: role = role.U1;
     const logoutResponse = await authenticate.logout(user, userRole);
-    if (!logoutResponse) {
-      throw new HTTPError("User logout failed", 500);
-    }
 
     res.clearCookie("refreshToken", {
       httpOnly: true,
@@ -244,13 +225,10 @@ export const drlogout = async (
   try {
     const user = req.doctor;
     if (!user) {
-      throw new HTTPError("User not found", 401);
+      throw new HTTPError("Unauthorized", 401);
     }
     const doctorRole: role = role.D2;
     const logoutResponse = await authenticate.logout(user, doctorRole);
-    if (!logoutResponse) {
-      throw new HTTPError("User logout failed", 500);
-    }
 
     res.clearCookie("refreshToken", {
       httpOnly: true,
@@ -292,9 +270,6 @@ export const refreshToken = async (
       req.cookies.refreshToken,
       userRole
     );
-    if (!generatedRefreshToken) {
-      throw new HTTPError("User creation failed", 500);
-    }
 
     return res.status(200).json({
       message: "User logged in successfully",
@@ -326,9 +301,6 @@ export const drRefreshToken = async (
       req.cookies.refreshToken,
       drRole
     );
-    if (!generatedRefreshToken) {
-      throw new HTTPError("User creation failed", 500);
-    }
 
     return res.status(200).json({
       success: true,

@@ -1,6 +1,6 @@
 import prisma from "../prisma";
-import { IReserveSlot } from "../utility/types/express/slots.type";
 import HTTPError from "../utility/error";
+import { IReserveSlot } from "../utility/types/express/slots.type";
 
 export class slotReservationService {
   bookSlot = async (data: IReserveSlot) => {
@@ -146,6 +146,50 @@ export class slotReservationService {
       message: "Slot created successfully",
       upcomingAppointments,
       pastAppointments,
+    };
+  };
+
+  cancellBookedSlot = async (data: IReserveSlot) => {
+    const { slotId, email } = data;
+    const user = await prisma.user.findUnique({
+      where: { email },
+    });
+    if (!user) {
+      throw new HTTPError("User not found", 404);
+    }
+
+    // Use prisma transaction to ensure atomicity
+    await prisma.$transaction(async (prisma) => {
+      const reservation = await prisma.reservation.findFirst({
+        where: {
+          userId: user.id,
+          slotId,
+        },
+      });
+
+      if (!reservation) {
+        throw new HTTPError("No reservation found for this slot", 404);
+      }
+
+      // Delete the reservation
+      await prisma.reservation.delete({
+        where: { id: reservation.id },
+      });
+
+      // Increment the slot capacity
+      await prisma.timeSlots.update({
+        where: { id: slotId },
+        data: {
+          capacity: {
+            increment: 1,
+          },
+        },
+      });
+    });
+
+    return {
+      success: true,
+      message: "Slot cancelled successfully",
     };
   };
 }

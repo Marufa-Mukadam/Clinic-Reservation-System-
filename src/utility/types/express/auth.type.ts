@@ -24,7 +24,7 @@ export interface IDrSignupData {
 export interface ILoginData {
   email: string;
   password: string;
-  ip: any;
+ 
 }
 
 export enum role {

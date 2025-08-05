@@ -7,12 +7,11 @@ import {
 } from "../utility/types/express/auth.type";
 import HTTPError from "../utility/error";
 import bcrypt from "bcrypt";
-
+import { TokenManagement } from "../utility/token";
 import { tokenExpiryTime } from "../constants/data";
 import { mailService } from "../utility/emailServices";
 import { ISlots } from "../utility/types/express/slots.type";
 import { SlotValidator } from "../utility/checkappointmentOverlapping";
-import { TokenManagement } from "../utility/token";
 
 export class adminAuthService {
   drActivateAccount = async (token: string) => {
@@ -150,7 +149,7 @@ export class adminAuthService {
     }
 
     const token = await TokenManagement.generateToken(
-      { email: user.email, ip: data.ip },
+      { email: user.email },
       process.env.JWT_TOKEN_SECRET!,
       tokenExpiryTime.accessTokenTime
     );

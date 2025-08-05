@@ -109,6 +109,9 @@ export class slotReservationService {
           },
         },
       },
+      orderBy: {
+        availableFrom: "asc",
+      },
     });
 
     const pastAppointments = await prisma.timeSlots.findMany({
@@ -132,6 +135,9 @@ export class slotReservationService {
             email: true,
           },
         },
+      },
+      orderBy: {
+        availableFrom: "asc",
       },
     });
 

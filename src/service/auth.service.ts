@@ -1,12 +1,13 @@
 import prisma from "../prisma";
+import bcrypt from "bcrypt";
+import HTTPError from "../utility/error";
 import { JwtPayload } from "jsonwebtoken";
+
 import {
   ILoginData,
   ISignupData,
   role,
 } from "../utility/types/express/auth.type";
-import HTTPError from "../utility/error";
-import bcrypt from "bcrypt";
 import { TokenManagement } from "../utility/token";
 import { tokenExpiryTime } from "../constants/data";
 import { mailService } from "../utility/emailServices";
@@ -99,7 +100,7 @@ export class adminAuthService {
       },
     });
     if (existingUser) {
-      throw new HTTPError("User already exists", 400);
+      throw new HTTPError("User already exists", 409);
     }
 
     const tokenData =
@@ -138,12 +139,7 @@ export class adminAuthService {
       throw new HTTPError("User not found", 404);
     }
     // Logic to verify password
-    if (!user.password) {
-      throw new HTTPError(
-        "You are signed up using google account please use one",
-        400
-      );
-    }
+
     if (!(await bcrypt.compare(password, user.password))) {
       throw new HTTPError("Invalid password", 401);
     }
@@ -227,7 +223,7 @@ export class adminAuthService {
 
     //check if the user has a refresh token
     if (!findUser.refreshToken) {
-      throw new HTTPError("User not logged in ", 400);
+      throw new HTTPError("User not logged in ", 401);
     }
 
     //verify the refresh token

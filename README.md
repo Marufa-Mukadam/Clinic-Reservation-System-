@@ -1,8 +1,6 @@
----
-
 ## Technologies Used
-- **Node.js**: Backend runtime environment.
 
+- **Node.js**: Backend runtime environment.
 
 ---
 

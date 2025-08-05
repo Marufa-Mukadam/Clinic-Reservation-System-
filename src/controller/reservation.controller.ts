@@ -20,9 +20,7 @@ export const bookSlots = async (
       email: user.email,
     };
     const bookedSlot = await reserveSlot.bookSlot(data);
-    if (!bookedSlot) {
-      throw new HTTPError("No slots found", 404);
-    }
+
     return res.status(200).json({
       success: bookedSlot.success,
       message: bookedSlot.message,
@@ -43,9 +41,7 @@ export const getBookedSlotsOfUser = async (
       throw new HTTPError("Unauthorized", 401);
     }
     const bookedSlots = await reserveSlot.getBookedSlotOfUser(user.email);
-    if (!bookedSlots) {
-      throw new HTTPError("No booked slots found", 404);
-    }
+
     return res.status(200).json({
       success: true,
       message: "Booked slots retrieved successfully",
@@ -72,9 +68,7 @@ export const delBookedSlotsOfUser = async (
       email: user.email,
     };
     const cancelledSlots = await reserveSlot.cancellBookedSlot(data);
-    if (!cancelledSlots) {
-      throw new HTTPError("No booked slots found", 404);
-    }
+
     return res.status(200).json({
       success: cancelledSlots.success,
       message: cancelledSlots.message,

@@ -19,7 +19,7 @@ export const createSlot = async (
     const { availableFrom, availableTo, capacity } = req.body;
     const from = new Date(availableFrom);
     const to = new Date(availableTo);
-    
+
     Helpers.validateWithZod(VCreateSlot, {
       availableFrom,
       availableTo,
@@ -33,9 +33,7 @@ export const createSlot = async (
       email: dr.email,
     };
     const updatedSlot = await slot.createSlot(data);
-    if (!updatedSlot) {
-      throw new HTTPError("User creation failed", 500);
-    }
+   
     return res.status(200).json({
       message: "Slot created successfully.",
       success: true,
@@ -57,9 +55,7 @@ export const getSlots = async (
       throw new HTTPError("Unauthorized", 401);
     }
     const slots = await slot.getSlots(dr.email);
-    if (!slots) {
-      throw new HTTPError("No slots found", 404);
-    }
+  
     return res.status(200).json({
       message: "Slots fetched successfully.",
       success: true,

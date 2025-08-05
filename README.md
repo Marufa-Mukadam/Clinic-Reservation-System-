@@ -1,4 +1,32 @@
-## Technologies Used
+# Clinic Reservation System
+
+## Brief Overview of the Flow Implemented
+
+### Authentication for User & Doctor
+
+- **Register**: Sends a verification link via email. On clicking the link, the user is successfully created.  
+- **Doctor Registration**: Doctors can also add their available slots during registration.  
+- **Login**: Authenticated using a password.
+
+### Slot Management (Doctor)
+
+- **Create Slot**: Doctors can create additional time slots post-registration.  
+- **Get Slots**: Retrieve all available slots for a specific doctor.
+
+### Reservation Flow (User)
+
+- **Book Slot**: Users can reserve an available slot with a doctor.  
+- **Get Slots**: Fetch both upcoming and past appointments of the user.  
+- **Cancel Slot**: Cancel an existing reservation.
+
+### Logout
+
+- Logs out the authenticated user or doctor.
+
+---
+
+
+# Technologies Used
 
 - **Node.js**: Backend runtime environment.
 

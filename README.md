@@ -49,5 +49,3 @@ npm run build - this will create a production ready build in the dist folder.
 ### step 2 - start the app
 
 npm start
-
---

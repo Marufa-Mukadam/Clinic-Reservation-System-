@@ -38,7 +38,7 @@ export class SlotValidator {
           `Time slots overlapped: ` +
             `[${current.start.toISOString()} - ${current.end.toISOString()}] and ` +
             `[${next.start.toISOString()} - ${next.end.toISOString()}]`,
-          601
+          409
         );
       }
     }

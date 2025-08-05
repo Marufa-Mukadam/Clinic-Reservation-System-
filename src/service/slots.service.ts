@@ -16,7 +16,7 @@ export class slotsService {
       email
     );
     if (isSlotOverlap) {
-      throw new HTTPError("Slot overlapped", 601);
+      throw new HTTPError("Slot overlapped", 409);
     }
     const slot = await prisma.timeSlots.create({
       data: {

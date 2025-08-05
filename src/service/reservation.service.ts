@@ -85,7 +85,7 @@ export class slotReservationService {
       where: { email },
     });
     if (!user) {
-      throw new HTTPError("Doctor not found", 404);
+      throw new HTTPError("User not found", 404);
     }
     const upcomingAppointments = await prisma.timeSlots.findMany({
       where: {

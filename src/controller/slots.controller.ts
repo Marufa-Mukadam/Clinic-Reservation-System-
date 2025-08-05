@@ -32,8 +32,8 @@ export const createSlot = async (
       capacity,
       email: dr.email,
     };
-    const updatedSlot = await slot.createSlot(data);
-   
+    await slot.createSlot(data);
+
     return res.status(200).json({
       message: "Slot created successfully.",
       success: true,
@@ -55,7 +55,7 @@ export const getSlots = async (
       throw new HTTPError("Unauthorized", 401);
     }
     const slots = await slot.getSlots(dr.email);
-  
+
     return res.status(200).json({
       message: "Slots fetched successfully.",
       success: true,

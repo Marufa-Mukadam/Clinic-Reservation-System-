@@ -178,7 +178,7 @@ export class AuthenticationService {
       throw new HTTPError("User not found", 404);
     }
 
-    await await (prisma[modelKey] as any).update({
+    await  (prisma[modelKey] as any).update({
       where: {
         email: user.email,
       },

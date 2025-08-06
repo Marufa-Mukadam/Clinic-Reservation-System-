@@ -1,5 +1,4 @@
 import nodemailer from "nodemailer";
-// import { emailHost, emailPort, emailService } from "../constants/data";
 import HTTPError from "./error";
 import {
   emailHost,

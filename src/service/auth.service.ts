@@ -26,7 +26,7 @@ export class AuthenticationService {
     }
     const { email, name, pass, availability } = decodedToken;
 
-    const user = await prisma.doctor.create({
+    const doctor = await prisma.doctor.create({
       data: {
         email: email,
         password: pass,
@@ -42,7 +42,7 @@ export class AuthenticationService {
         },
       },
     });
-    if (!user) {
+    if (!doctor) {
       throw new HTTPError("Failed to create user", 500);
     }
 

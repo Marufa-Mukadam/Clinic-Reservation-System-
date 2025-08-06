@@ -5,7 +5,7 @@ import {
   role,
 } from "../utility/types/express/auth.type";
 import HTTPError from "../utility/error";
-import { adminAuthService } from "../service/auth.service";
+import { AuthenticationService } from "../service/auth.service";
 import { Helpers } from "../utility/helperValidation";
 import {
   VLogin,
@@ -13,7 +13,7 @@ import {
   VRegistrationDr,
 } from "../utility/validations/auth.validation";
 import { PasswordHash } from "../utility/passwordHash";
-const authenticate = new adminAuthService();
+const authenticate = new AuthenticationService();
 
 //doctor controllers
 export const registerDr = async (

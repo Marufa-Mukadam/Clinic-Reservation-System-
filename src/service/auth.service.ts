@@ -14,7 +14,7 @@ import { mailService } from "../utility/emailServices";
 import { ISlots } from "../utility/types/express/slots.type";
 import { SlotValidator } from "../utility/checkappointmentOverlapping";
 
-export class adminAuthService {
+export class AuthenticationService {
   drActivateAccount = async (token: string) => {
     const decodedToken = TokenManagement.verifyToken(
       token,
